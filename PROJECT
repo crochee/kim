@@ -9,4 +9,14 @@ layout:
 multigroup: true
 projectName: kim
 repo: github.com/crochee/kim
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kim.io
+  group: kim
+  kind: User
+  path: github.com/crochee/kim/api/kim/v1
+  version: v1
 version: "3"

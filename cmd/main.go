@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package cmd contains the command line interface for the operator
 package cmd
 
 import (
@@ -35,6 +36,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/metrics/filters"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+
+	kimv1 "github.com/crochee/kim/api/kim/v1"
+	kimcontroller "github.com/crochee/kim/internal/controller/kim"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -46,10 +50,11 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
+	utilruntime.Must(kimv1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
-func Operator(ctx context.Context) error{
+func Operator(ctx context.Context) error {
 	metricsCertPath := viper.GetString("metrics-cert-path")
 	metricsCertName := viper.GetString("metrics-cert-name")
 	metricsCertKey := viper.GetString("metrics-cert-key")
@@ -171,6 +176,13 @@ func Operator(ctx context.Context) error{
 		return err
 	}
 
+	if err := (&kimcontroller.UserReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "User")
+		return err
+	}
 	// +kubebuilder:scaffold:builder
 
 	if metricsCertWatcher != nil {

@@ -1,0 +1,93 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: users.kim.kim.io
+spec:
+  group: kim.kim.io
+  names:
+    kind: User
+    listKind: UserList
+    plural: users
+    singular: user
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: User is the Schema for the users API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: spec defines the desired state of User
+            properties:
+              address:
+                type: string
+              birthdate:
+                type: string
+              desc:
+                type: string
+              email:
+                type: string
+              emailVerified:
+                type: boolean
+              familyName:
+                type: string
+              gender:
+                type: string
+              givenName:
+                type: string
+              locale:
+                type: string
+              middleName:
+                type: string
+              nickName:
+                type: string
+              phoneNumber:
+                type: string
+              phoneNumberVerified:
+                type: boolean
+              picture:
+                type: string
+              preferredUsername:
+                type: string
+              profile:
+                type: string
+              secretName:
+                type: string
+              website:
+                type: string
+              zoneinfo:
+                type: string
+            required:
+            - desc
+            - secretName
+            type: object
+          status:
+            description: status defines the observed state of User
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

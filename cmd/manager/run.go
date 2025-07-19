@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"context"
 
@@ -28,4 +27,3 @@ func run(ctx context.Context) error {
 	}(ctx)
 	return nil
 }
-

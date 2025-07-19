@@ -10,7 +10,8 @@ set -o pipefail
 cd "$(dirname "${0}")/.."
 
 # kube_codegen.sh may be confused by the symbolic links in the path, so cd to the canonicalized path
-cd "$(readlink -f .)"
+REPO_ROOT="$(readlink -f .)"
+cd "${REPO_ROOT}"
 
 CODEGEN_VERSION=$(grep 'k8s.io/code-generator' go.sum | awk '{print $2}' | sed 's/\/go.mod//g' | head -1)
 CODEGEN_PKG=$(echo $(go env GOPATH)"/pkg/mod/k8s.io/code-generator@${CODEGEN_VERSION}")
@@ -20,7 +21,8 @@ if [[ ! -d ${CODEGEN_PKG} ]]; then
 fi
 echo ">> Using ${CODEGEN_PKG}"
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+# 获取go mod的包名
+THIS_PKG="$(go list -m | cut -d' ' -f3)"
 
 # shellcheck source=/dev/null
 source "${CODEGEN_PKG}/kube_codegen.sh"
@@ -32,6 +34,5 @@ kube::codegen::gen_client "${REPO_ROOT}/api" \
     --with-watch \
     --with-applyconfig \
     --output-dir "${REPO_ROOT}/pkg/client" \
-    --output-pkg "github.com/crochee/kim/pkg/client" \
-    --boilerplate "${REPO_ROOT}/hack/boilerplate.go.txt"
-
+    --boilerplate "${REPO_ROOT}/hack/boilerplate.go.txt" \
+    --output-pkg "${THIS_PKG}/pkg/client"

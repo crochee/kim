@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"context"
 	"os"
@@ -149,4 +148,3 @@ func runRoot(ctx context.Context) error {
 	})
 	return g.Wait()
 }
-

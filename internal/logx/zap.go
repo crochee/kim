@@ -87,4 +87,3 @@ func BindFlags(o *zapx.Options, fs *pflag.FlagSet) error {
 	}
 	return nil
 }
-

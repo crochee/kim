@@ -55,4 +55,3 @@ func LogWithTrace(ctx context.Context) context.Context {
 	}
 	return ctx
 }
-
