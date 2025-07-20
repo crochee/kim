@@ -48,7 +48,10 @@ type UserReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.21.0/pkg/reconcile
 func (r *UserReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = logf.FromContext(ctx)
-
+	user := &kimv1.User{}
+	if err := r.Get(ctx, req.NamespacedName, user); err != nil {
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 	// TODO(user): your logic here
 
 	return ctrl.Result{}, nil

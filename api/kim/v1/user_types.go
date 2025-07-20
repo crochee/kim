@@ -38,6 +38,7 @@ type Claim struct {
 	PhoneNumber         *string `json:"phoneNumber,omitempty"`
 	PhoneNumberVerified *bool   `json:"phoneNumberVerified,omitempty"`
 	Address             *string `json:"address,omitempty"`
+	IsAdmin             *bool   `json:"isAdmin,omitempty"`
 }
 
 // UserSpec defines the desired state of User

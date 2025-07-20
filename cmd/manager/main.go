@@ -1,17 +1,14 @@
 package main
 
 import (
-	"context"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
-	"github.com/sourcegraph/conc/pool"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/crochee/kim/cmd"
 	"github.com/crochee/kim/internal/logx"
 )
 
@@ -136,15 +133,4 @@ func root() (*cobra.Command, error) {
 	}
 	logx.BindFlags(&opts, pf)
 	return cmd, nil
-}
-
-func runRoot(ctx context.Context) error {
-	g := pool.New().WithContext(ctx).WithCancelOnError()
-	g.Go(func(ctx context.Context) error {
-		return cmd.Operator(ctx)
-	})
-	g.Go(func(ctx context.Context) error {
-		return run(ctx)
-	})
-	return g.Wait()
 }
